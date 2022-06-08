@@ -1,4 +1,4 @@
-// Teste com o git no repositorio do GitHub.
+// Teste com o git no repositorio do gitHub.
 // Daniel Saes
 
 package teste;
