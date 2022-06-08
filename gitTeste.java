@@ -1,4 +1,4 @@
-// Teste com o git no repositorio da pasta apenas Repository.!!!
+// Teste com o git no repositorio do GitHub.
 // Daniel Saes
 
 package teste;
