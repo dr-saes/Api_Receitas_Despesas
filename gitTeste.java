@@ -1,4 +1,4 @@
-// Teste com o repositorio danielGit do GitHub com o repositorio local danielGitRepository na minha maquina.
+// Teste com o repositorio danielGit do GitHub com o repositorio local gitRepositoryDaniel na minha maquina.
 // Daniel Saes
 
 package teste;
