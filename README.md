@@ -4,5 +4,5 @@
 
 
 ```
-importa no eclipse
+usando o vscode
 ```
