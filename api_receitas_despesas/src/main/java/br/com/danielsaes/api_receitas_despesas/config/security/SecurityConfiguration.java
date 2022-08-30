@@ -17,9 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import br.com.danielsaes.api_receitas_despesas.repository.UsuarioRepository;
 
-
-@Configuration
 @EnableWebSecurity
+@Configuration
 public class SecurityConfiguration {
 	
 	
@@ -34,22 +33,25 @@ public class SecurityConfiguration {
 		http
 			.authorizeHttpRequests()
 			
+//			.antMatchers(HttpMethod.GET,"/despesas/**").permitAll()
+//			.antMatchers(HttpMethod.GET,"/receitas/**").permitAll()
+//			.antMatchers(HttpMethod.GET,"/h2/**").permitAll()
+			
 			.antMatchers(HttpMethod.POST,"/auth").permitAll()
 			
 			.antMatchers(HttpMethod.GET,"/despesas/**").hasAnyRole("USUARIO","ADMIN")
 			.antMatchers(HttpMethod.GET,"/receitas/**").hasAnyRole("USUARIO","ADMIN")
 			
-//			.antMatchers(HttpMethod.GET,"/despesas/**").permitAll()
-//			.antMatchers(HttpMethod.GET,"/receitas/**").permitAll()
+			.antMatchers(HttpMethod.POST,"/receitas/**").hasAnyRole("USUARIO","ADMIN")
+			.antMatchers(HttpMethod.POST,"/despesas/**").hasAnyRole("USUARIO","ADMIN")
+			
+			.antMatchers(HttpMethod.PUT,"/receitas/**").hasRole("ADMIN")
+			.antMatchers(HttpMethod.PUT,"/despesas/**").hasRole("ADMIN")
 			
 			.antMatchers(HttpMethod.DELETE,"/receitas/**").hasRole("ADMIN")
 			.antMatchers(HttpMethod.DELETE,"/despesas/**").hasRole("ADMIN")
 			
-			.antMatchers(HttpMethod.POST,"/receitas/**").hasAnyRole("USUARIO","ADMIN")
-			.antMatchers(HttpMethod.POST,"/despesas/**").hasAnyRole("USUARIO","ADMIN")
-			
 			.antMatchers(HttpMethod.GET,"/resumo/**").hasRole("ADMIN")
-			
 			
 			.anyRequest().authenticated()
 		.and()	

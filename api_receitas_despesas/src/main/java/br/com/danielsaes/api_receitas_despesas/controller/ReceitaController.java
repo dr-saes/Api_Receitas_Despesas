@@ -37,13 +37,21 @@ import br.com.danielsaes.api_receitas_despesas.repository.ReceitaRepository;
 @RequestMapping("/receitas")
 public class ReceitaController {
 
-	@Autowired
+	
 	private ReceitaRepository receitaRepository;
+	
+	@Autowired
+	public ReceitaController(ReceitaRepository receitaRepository) {
+		this.receitaRepository = receitaRepository;
+	}
+	
+	public ReceitaController() {
+	}
 
 	@PostMapping
 	@Transactional
 	@CacheEvict(value = "listaDeReceitas", allEntries = true)
-	public ResponseEntity<ReceitaDto> cadastrarReceita(@RequestBody @Valid ReceitaForm form,
+	public ResponseEntity<?> cadastrarReceita(@RequestBody @Valid ReceitaForm form,
 			UriComponentsBuilder uriBuilder) throws Exception {
 
 		Receita receita = new Receita();
@@ -53,15 +61,15 @@ public class ReceitaController {
 			if (!receitaRepository.findByMesAnoEDescricao(receita.getMesReceita(), receita.getAnoReceita(), receita.getDescricao()).isEmpty()) {
 			}
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Receita com essa descrição já criada com esse mês!");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Receita Duplicada");
 		}
 
 		receitaRepository.save(receita);
 		URI uri = uriBuilder.path("/receitas/{id}").buildAndExpand(receita.getId()).toUri();
-		return ResponseEntity.created(uri).body(new ReceitaDto(receita));
+		return ResponseEntity.created(uri).body(new ReceitaDto(receita)) ;
 	}
 
-	@GetMapping
+	@GetMapping 
 	@Cacheable(value = "listaDeReceitas")
 	public Page<ReceitaDto> listarReceitas(@RequestParam(required = false) String descricao,
 			@PageableDefault(sort = "dataReceita", direction = Direction.ASC, page = 0, size = 100) Pageable paginacao) {
@@ -119,7 +127,7 @@ public class ReceitaController {
 		if(!listaAnoMes.isEmpty()) {
 			return ReceitaDtoListagem.converter(listaAnoMes);
 		}
-		return Page.empty();
+		return Page.empty(paginacao);
 	}
-	
+	 
 }  

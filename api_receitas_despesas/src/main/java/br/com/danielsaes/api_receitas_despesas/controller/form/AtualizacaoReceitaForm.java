@@ -14,7 +14,7 @@ import br.com.danielsaes.api_receitas_despesas.modelo.Receita;
 import br.com.danielsaes.api_receitas_despesas.repository.ReceitaRepository;
 
 public class AtualizacaoReceitaForm {
-	
+	 
 	@NotBlank
 	@NotBlank
 	@NotNull

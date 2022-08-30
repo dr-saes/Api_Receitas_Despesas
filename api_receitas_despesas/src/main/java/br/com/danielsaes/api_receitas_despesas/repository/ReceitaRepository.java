@@ -23,11 +23,9 @@ public interface ReceitaRepository extends JpaRepository<Receita, Long> {
 
 	Page<Receita> findByAnoReceitaAndMesReceita(int anoReceita, int mesReceita, Pageable paginacao);
 	
-//	@Query("SELECT SUM(valorReceita) FROM Receita WHERE anoReceita = :anoReceita and mesReceita = :mesReceita")
-//	Page<BigDecimal> FindSumValorReceitaPorAnoReceitaEMesReceita(int anoReceita, int mesReceita, Pageable paginacao);
-
 	@Query("SELECT SUM(valorReceita) FROM Receita WHERE anoReceita = :anoReceita and mesReceita = :mesReceita")
 	Optional<BigDecimal> FindBySumValorReceitaAnoReceitaAndMesReceita(int anoReceita, int mesReceita);
+
 	
 }
 

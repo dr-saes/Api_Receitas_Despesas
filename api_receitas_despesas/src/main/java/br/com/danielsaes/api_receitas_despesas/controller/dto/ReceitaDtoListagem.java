@@ -46,7 +46,7 @@ public class ReceitaDtoListagem {
 		return valorReceita;
 	}
 
-	public void setValorReceita(BigDecimal valorReceita) {
+	public void setValorReceita(BigDecimal valorReceita) {  
 		this.valorReceita = valorReceita;
 	}
 

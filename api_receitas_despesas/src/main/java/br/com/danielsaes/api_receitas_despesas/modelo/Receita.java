@@ -3,6 +3,7 @@ package br.com.danielsaes.api_receitas_despesas.modelo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,10 +15,15 @@ public class Receita {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column
 	private String descricao;
+	@Column
 	private BigDecimal valorReceita;
+	@Column
 	private LocalDate dataReceita;
+	@Column
 	private int mesReceita;
+	@Column
 	private int anoReceita;
 	
 

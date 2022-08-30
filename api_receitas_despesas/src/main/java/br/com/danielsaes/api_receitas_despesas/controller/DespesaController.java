@@ -44,7 +44,7 @@ public class DespesaController {
 	@PostMapping
 	@Transactional
 	@CacheEvict(value = "listaDeDespesas", allEntries = true)
-	public ResponseEntity<DespesaDto> cadastrarDespesa(@RequestBody @Valid DespesaForm form,
+	public ResponseEntity<?> cadastrarDespesa(@RequestBody @Valid DespesaForm form,
 			UriComponentsBuilder uriBuilder) throws Exception {
 
 		Despesa despesa = new Despesa();
@@ -54,7 +54,7 @@ public class DespesaController {
 			if (!despesaRepository.findByAnoMesEDescricao(despesa.getMesDespesa(),despesa.getAnoDespesa(), despesa.getDescricao()).isEmpty()) {
 			}
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Despesa com essa descrição já criada com esse mês!");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Despesa Duplicada");
 		}
 
 		despesaRepository.save(despesa);
