@@ -1,5 +1,7 @@
 package br.com.danielsaes.api_receitas_despesas.modelo;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,7 +10,7 @@ import javax.persistence.Id;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
-public class Perfil implements GrantedAuthority{
+public class Perfil implements GrantedAuthority,Serializable{
 	
 	private static final long serialVersionUID = 1L;
 

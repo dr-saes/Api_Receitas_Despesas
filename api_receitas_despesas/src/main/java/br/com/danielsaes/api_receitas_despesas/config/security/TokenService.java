@@ -12,7 +12,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public class TokenService {
+public class TokenService { 
 	
 	@Value("${api_receitas_despesas.jwt.expiration}")
 	private String expiration;

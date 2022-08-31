@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
+import br.com.danielsaes.api_receitas_despesas.enums.TipoDespesa;
 import br.com.danielsaes.api_receitas_despesas.modelo.Despesa;
-import br.com.danielsaes.api_receitas_despesas.modelo.TipoDespesa;
 
 public class DespesaDto {
 

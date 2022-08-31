@@ -22,9 +22,9 @@ import br.com.danielsaes.api_receitas_despesas.repository.UsuarioRepository;
 public class SecurityConfiguration {
 	
 	
-	@Autowired
+	@Autowired 
 	private TokenService tokenService;
-
+ 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	 
@@ -34,7 +34,7 @@ public class SecurityConfiguration {
 			.authorizeHttpRequests()
 			
 //			.antMatchers(HttpMethod.GET,"/despesas/**").permitAll()
-//			.antMatchers(HttpMethod.GET,"/receitas/**").permitAll()
+//			.antMatchers(HttpMethod.GET,"/receitas/**").permitAll() 
 //			.antMatchers(HttpMethod.GET,"/h2/**").permitAll()
 			
 			.antMatchers(HttpMethod.POST,"/auth").permitAll()

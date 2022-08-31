@@ -10,8 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import br.com.danielsaes.api_receitas_despesas.enums.TipoDespesa;
 import br.com.danielsaes.api_receitas_despesas.modelo.Despesa;
-import br.com.danielsaes.api_receitas_despesas.modelo.TipoDespesa;
 import br.com.danielsaes.api_receitas_despesas.repository.DespesaRepository;
 
 public class AtualizacaoDespesaForm {

@@ -1,5 +1,6 @@
 package br.com.danielsaes.api_receitas_despesas.modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
-public class Usuario implements UserDetails{
+public class Usuario implements UserDetails, Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	@Id

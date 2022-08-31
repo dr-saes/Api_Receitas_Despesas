@@ -44,9 +44,9 @@ public class ReceitaController {
 	public ReceitaController(ReceitaRepository receitaRepository) {
 		this.receitaRepository = receitaRepository;
 	}
-	
+	 
 	public ReceitaController() {
-	}
+	} 
 
 	@PostMapping
 	@Transactional
@@ -119,7 +119,7 @@ public class ReceitaController {
 	
 	
 	@GetMapping("/{anoReceita}/{mesReceita}")
-	public Page<Object> listarPorAno(@PathVariable int anoReceita,@PathVariable int mesReceita,
+	public Object listarPorAno(@PathVariable int anoReceita,@PathVariable int mesReceita,
 			@PageableDefault(sort = "dataReceita", direction = Direction.ASC, page = 0, size = 100) Pageable paginacao) {
 
 		Page<Receita> listaAnoMes = receitaRepository.findByAnoReceitaAndMesReceita(anoReceita, mesReceita, paginacao);
@@ -127,7 +127,7 @@ public class ReceitaController {
 		if(!listaAnoMes.isEmpty()) {
 			return ReceitaDtoListagem.converter(listaAnoMes);
 		}
-		return Page.empty(paginacao);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Consulta inexistente");
 	}
 	 
 }  

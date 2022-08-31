@@ -35,13 +35,13 @@ import br.com.danielsaes.api_receitas_despesas.modelo.Despesa;
 import br.com.danielsaes.api_receitas_despesas.repository.DespesaRepository;
 
 @RestController
-@RequestMapping("/despesas")
+@RequestMapping("/despesas") 
 public class DespesaController {
 
 	@Autowired
 	private DespesaRepository despesaRepository;
 
-	@PostMapping
+	@PostMapping 
 	@Transactional
 	@CacheEvict(value = "listaDeDespesas", allEntries = true)
 	public ResponseEntity<?> cadastrarDespesa(@RequestBody @Valid DespesaForm form,
@@ -113,7 +113,7 @@ public class DespesaController {
 	}
 	
 	@GetMapping("/{anoDespesa}/{mesDespesa}")
-	public Page<Object> listarPorAno(@PathVariable int anoDespesa,@PathVariable int mesDespesa,
+	public Object listarPorAno(@PathVariable int anoDespesa,@PathVariable int mesDespesa,
 			@PageableDefault(sort = "dataDespesa", direction = Direction.ASC, page = 0, size = 100) Pageable paginacao) {
 		
 		Page<Despesa> listaAnoMes = despesaRepository.findByAnoDespesaAndMesDespesa(anoDespesa, mesDespesa, paginacao);
@@ -121,6 +121,6 @@ public class DespesaController {
 		if(!listaAnoMes.isEmpty()) {
 			return DespesaDtoListagem.converterLista(listaAnoMes);
 		}
-		return Page.empty();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Consulta inexistente");
 	}
 }

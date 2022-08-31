@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import br.com.danielsaes.api_receitas_despesas.modelo.Usuario;
 import br.com.danielsaes.api_receitas_despesas.repository.UsuarioRepository;
 
-
+ 
 public class AutenticacaoViaTokenFilter extends OncePerRequestFilter{
 
 	private TokenService tokenService;
