@@ -5,10 +5,11 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.hateoas.RepresentationModel;
 
 import br.com.danielsaes.api_receitas_despesas.modelo.Receita;
 
-public class ReceitaDto {
+public class ReceitaDto  extends RepresentationModel<ReceitaDto>{
 
 	private Long id;
 	private String descricao;
@@ -31,6 +32,7 @@ public class ReceitaDto {
 		this.dataReceita = receita.get().getDataReceita();
 		this.valorReceita = receita.get().getValorReceita();
 	}
+	
 
 	public Long getId() {
 		return id;
@@ -67,6 +69,13 @@ public class ReceitaDto {
 	public static Page<ReceitaDto> converterLista(Page<Receita> listaReceitas) {
 		return listaReceitas.map(ReceitaDto::new);
 	}
+
+	public static ReceitaDto converterReceita(Optional<Receita> receita) {
+		return new ReceitaDto(receita);
+		
+	}
+
+
 
 
 }

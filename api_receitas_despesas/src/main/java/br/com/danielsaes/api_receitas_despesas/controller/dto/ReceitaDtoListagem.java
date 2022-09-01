@@ -4,10 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
+import org.springframework.hateoas.RepresentationModel;
 
 import br.com.danielsaes.api_receitas_despesas.modelo.Receita;
 
-public class ReceitaDtoListagem {
+public class ReceitaDtoListagem extends RepresentationModel<DespesaDto>{
 
 	private String descricao;
 	private LocalDate dataReceita;

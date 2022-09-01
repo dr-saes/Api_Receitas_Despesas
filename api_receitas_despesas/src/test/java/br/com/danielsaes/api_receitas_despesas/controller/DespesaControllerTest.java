@@ -36,7 +36,7 @@ class DespesaControllerTest {
 	@WithMockUser(roles = {"ADMIN","USUARIO"})
 	void deveriaDevolver201PoisDespesaCriada() throws Exception {
 		URI uri = new URI("/despesas");
-		String json = "{\"descricao\" : \"Mercado\" , \"valorDespesa\" : \"2000\" , \"dataDespesa\" : \"01/02/2012\" , \"tipoDespesa\" : \"ALIMENTACAO\"}";
+		String json = "{\"descricao\" : \"Mercado\" , \"valorDespesa\" : \"2000\" , \"dataDespesa\" : \"01/05/2011\" , \"tipoDespesa\" : \"ALIMENTACAO\"}";
 		
 		mockMvc .perform(MockMvcRequestBuilders.post(uri)
 				.content(json).contentType(MediaType.APPLICATION_JSON)) 
@@ -47,7 +47,7 @@ class DespesaControllerTest {
 	@WithMockUser(roles = {"ADMIN","USUARIO"})
 	void deveriaDevolver201PoisDespesaCriadaComAtribuirTipo_OUTRASPoisTipoNaoInfomado() throws Exception {
 		URI uri = new URI("/despesas");
-		String json = "{\"descricao\" : \"Pneu\" , \"valorDespesa\" : \"2000\" , \"dataDespesa\" : \"01/02/2012\"}";
+		String json = "{\"descricao\" : \"Pneu\" , \"valorDespesa\" : \"2000\" , \"dataDespesa\" : \"01/06/2011\"}";
 		
 		mockMvc .perform(MockMvcRequestBuilders.post(uri)
 				.content(json).contentType(MediaType.APPLICATION_JSON)) 
@@ -94,7 +94,7 @@ class DespesaControllerTest {
 	@WithMockUser(roles = {"ADMIN","USUARIO"})
 	void deveriaDevolver200PoisDespesaAtualizada() throws Exception {
 		URI uri = new URI("/despesas/44");
-		String json = "{\"descricao\" : \"Mercado\" , \"valorDespesa\" : \"1000\" , \"dataDespesa\" : \"01/01/2025\" , \"tipoDespesa\" : \"ALIMENTACAO\"}";
+		String json = "{\"descricao\" : \"Mercado\" , \"valorDespesa\" : \"1000\" , \"dataDespesa\" : \"01/02/2025\" , \"tipoDespesa\" : \"ALIMENTACAO\"}";
 
 		mockMvc .perform(MockMvcRequestBuilders.put(uri)
 				.content(json).contentType(MediaType.APPLICATION_JSON))
@@ -115,7 +115,7 @@ class DespesaControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void deveriaDevolver200PoisIdExistente() throws Exception {
-		URI uri = new URI("/despesas/57");
+		URI uri = new URI("/despesas/68");
 
 		mockMvc .perform(MockMvcRequestBuilders.delete(uri))
 				.andExpect(MockMvcResultMatchers.status().isOk());

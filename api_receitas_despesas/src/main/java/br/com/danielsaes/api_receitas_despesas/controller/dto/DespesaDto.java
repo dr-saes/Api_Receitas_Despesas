@@ -5,11 +5,12 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.hateoas.RepresentationModel;
 
 import br.com.danielsaes.api_receitas_despesas.enums.TipoDespesa;
 import br.com.danielsaes.api_receitas_despesas.modelo.Despesa;
 
-public class DespesaDto {
+public class DespesaDto extends RepresentationModel<DespesaDto>{
 
 	private Long id;
 	private String descricao;
@@ -78,6 +79,11 @@ public class DespesaDto {
 
 	public static Page<DespesaDto> converterLista(Page<Despesa> listaDespesas) {
 		return listaDespesas.map(DespesaDto::new);
+	}
+	
+	public static DespesaDto converterDespesa(Optional<Despesa> despesa) {
+		return new DespesaDto(despesa);
+		
 	}
 	
 }

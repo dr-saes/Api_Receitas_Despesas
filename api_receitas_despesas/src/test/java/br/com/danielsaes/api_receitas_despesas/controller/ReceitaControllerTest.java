@@ -36,7 +36,7 @@ class ReceitaControllerTest {
 	@WithMockUser(roles = {"ADMIN","USUARIO"})
 	void deveriaDevolver201PoisNovaReceitaCriada() throws Exception {
 		URI uri = new URI("/receitas");
-		String json = "{\"descricao\" : \"Salario\" , \"valorReceita\" : \"50000\" , \"dataReceita\" : \"01/08/2013\"}";
+		String json = "{\"descricao\" : \"Salario\" , \"valorReceita\" : \"50000\" , \"dataReceita\" : \"01/03/2011\"}";
 
 		mockMvc .perform(MockMvcRequestBuilders.post(uri)
 				.content(json).contentType(MediaType.APPLICATION_JSON))
@@ -104,7 +104,7 @@ class ReceitaControllerTest {
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void deveriaDevolver200PoisIdExistente() throws Exception {
-		URI uri = new URI("/receitas/64");
+		URI uri = new URI("/receitas/34");
 
 		mockMvc .perform(MockMvcRequestBuilders.delete(uri))
 				.andExpect(MockMvcResultMatchers.status().isOk());
@@ -131,7 +131,7 @@ class ReceitaControllerTest {
 	@Test
 	@WithMockUser(roles = "Usuario")
 	void deveriaDevolver403NaoDeletarPoisIdExistenteEUsuarioNaoAutorizado() throws Exception {
-		URI uri = new URI("/receitas/51");
+		URI uri = new URI("/receitas/72");
 
 		mockMvc .perform(MockMvcRequestBuilders.delete(uri))
 				.andExpect(MockMvcResultMatchers.status().isForbidden());

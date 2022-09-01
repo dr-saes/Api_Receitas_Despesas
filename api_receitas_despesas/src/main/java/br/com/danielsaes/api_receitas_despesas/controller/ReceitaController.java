@@ -1,5 +1,8 @@
 package br.com.danielsaes.api_receitas_despesas.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.net.URI;
 import java.util.Optional;
 
@@ -27,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.danielsaes.api_receitas_despesas.controller.dto.ReceitaDto;
-import br.com.danielsaes.api_receitas_despesas.controller.dto.ReceitaDtoListagem;
 import br.com.danielsaes.api_receitas_despesas.controller.form.AtualizacaoReceitaForm;
 import br.com.danielsaes.api_receitas_despesas.controller.form.ReceitaForm;
 import br.com.danielsaes.api_receitas_despesas.modelo.Receita;
@@ -37,28 +39,29 @@ import br.com.danielsaes.api_receitas_despesas.repository.ReceitaRepository;
 @RequestMapping("/receitas")
 public class ReceitaController {
 
-	
 	private ReceitaRepository receitaRepository;
-	
+
 	@Autowired
 	public ReceitaController(ReceitaRepository receitaRepository) {
 		this.receitaRepository = receitaRepository;
 	}
-	 
+
 	public ReceitaController() {
-	} 
+	}
 
 	@PostMapping
 	@Transactional
 	@CacheEvict(value = "listaDeReceitas", allEntries = true)
-	public ResponseEntity<?> cadastrarReceita(@RequestBody @Valid ReceitaForm form,
-			UriComponentsBuilder uriBuilder) throws Exception {
+	public ResponseEntity<?> cadastrarReceita(@RequestBody @Valid ReceitaForm form, UriComponentsBuilder uriBuilder)
+			throws Exception {
 
 		Receita receita = new Receita();
 		receita = form.toReceita();
 
 		try {
-			if (!receitaRepository.findByMesAnoEDescricao(receita.getMesReceita(), receita.getAnoReceita(), receita.getDescricao()).isEmpty()) {
+			if (!receitaRepository
+					.findByMesAnoEDescricao(receita.getMesReceita(), receita.getAnoReceita(), receita.getDescricao())
+					.isEmpty()) {
 			}
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Receita Duplicada");
@@ -66,31 +69,51 @@ public class ReceitaController {
 
 		receitaRepository.save(receita);
 		URI uri = uriBuilder.path("/receitas/{id}").buildAndExpand(receita.getId()).toUri();
-		return ResponseEntity.created(uri).body(new ReceitaDto(receita)) ;
+		return ResponseEntity.created(uri).body(new ReceitaDto(receita));
 	}
 
-	@GetMapping 
+	@GetMapping
 	@Cacheable(value = "listaDeReceitas")
-	public Page<ReceitaDto> listarReceitas(@RequestParam(required = false) String descricao,
+	public ResponseEntity<?> listarReceitas(@RequestParam(required = false) String descricao,
 			@PageableDefault(sort = "dataReceita", direction = Direction.ASC, page = 0, size = 100) Pageable paginacao) {
 
 		if (descricao == null) {
 			Page<Receita> listaReceitas = receitaRepository.findAll(paginacao);
-			return ReceitaDto.converterLista(listaReceitas);
+			if (listaReceitas.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Lista inexistente");
+			} else {
+				Page<ReceitaDto> listaDto = ReceitaDto.converterLista(listaReceitas);
+				for (ReceitaDto receita : listaDto) {
+					long id = receita.getId();
+					receita.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao)).withSelfRel());
+				}
+				return new ResponseEntity<Page<ReceitaDto>>(listaDto, HttpStatus.OK);
+			}
 		} else {
-			Page<Receita> listaReceitas = receitaRepository.findByDescricao(descricao, paginacao);
-			return ReceitaDto.converterLista(listaReceitas);
+			Page<Receita> listaReceitasDescricao = receitaRepository.findByDescricao(descricao, paginacao);
+			Page<ReceitaDto> listaDtoDescricao = ReceitaDto.converterLista(listaReceitasDescricao);
+			for (ReceitaDto receita : listaDtoDescricao) {
+				long id = receita.getId();
+				receita.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao)).withSelfRel());
+			}
+			return new ResponseEntity<Page<ReceitaDto>>(listaDtoDescricao, HttpStatus.OK);
 		}
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> listarPorId(@PathVariable Long id) {
+	public ResponseEntity<?> listarPorId(@PathVariable Long id,
+			@PageableDefault(sort = "dataReceita", direction = Direction.ASC, page = 0, size = 100) Pageable paginacao) {
 
 		Optional<Receita> receita = receitaRepository.findById(id);
-		if (receita.isPresent() & receita != null) {
-			return ResponseEntity.ok(new ReceitaDto(receita));
+		if (!receita.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id inexistente");
+		} else {
+			ReceitaDto receitaDto = ReceitaDto.converterReceita(receita);
+			
+			receitaDto.add(linkTo(methodOn(ReceitaController.class).listarReceitas(receitaDto.getDescricao(), paginacao))
+					.withRel(" Lista de receitas com a descricao: " + "'" + receitaDto.getDescricao() + "' "));
+			return new ResponseEntity<ReceitaDto>(receitaDto, HttpStatus.OK);
 		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id inexistente");
 	}
 
 	@PutMapping("/{id}")
@@ -116,18 +139,24 @@ public class ReceitaController {
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id inexistente");
 	}
-	
-	
+
 	@GetMapping("/{anoReceita}/{mesReceita}")
-	public Object listarPorAno(@PathVariable int anoReceita,@PathVariable int mesReceita,
+	public Object listarPorAno(@PathVariable int anoReceita, @PathVariable int mesReceita,
 			@PageableDefault(sort = "dataReceita", direction = Direction.ASC, page = 0, size = 100) Pageable paginacao) {
 
-		Page<Receita> listaAnoMes = receitaRepository.findByAnoReceitaAndMesReceita(anoReceita, mesReceita, paginacao);
-		
-		if(!listaAnoMes.isEmpty()) {
-			return ReceitaDtoListagem.converter(listaAnoMes);
+		Page<Receita> listaReceitasAnoMes = receitaRepository.findByAnoReceitaAndMesReceita(anoReceita, mesReceita,
+				paginacao);
+
+		if (listaReceitasAnoMes.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Consulta inexistente");
+		} else {
+			Page<ReceitaDto> listaReceitasAnoMesDto = ReceitaDto.converterLista(listaReceitasAnoMes);
+			for (ReceitaDto receita : listaReceitasAnoMesDto) {
+				long id = receita.getId();
+				receita.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao)).withSelfRel());
+			}
+			return new ResponseEntity<Page<ReceitaDto>>(listaReceitasAnoMesDto, HttpStatus.OK);
 		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Consulta inexistente");
 	}
-	 
-}  
+
+}

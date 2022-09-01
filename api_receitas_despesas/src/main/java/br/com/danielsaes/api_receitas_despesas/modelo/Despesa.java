@@ -11,10 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import br.com.danielsaes.api_receitas_despesas.enums.TipoDespesa;
 
 @Entity
-public class Despesa implements Serializable{
+public class Despesa extends RepresentationModel<Despesa> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@Id

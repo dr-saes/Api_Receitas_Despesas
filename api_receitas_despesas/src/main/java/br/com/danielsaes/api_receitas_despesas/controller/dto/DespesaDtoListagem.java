@@ -4,11 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
+import org.springframework.hateoas.RepresentationModel;
 
 import br.com.danielsaes.api_receitas_despesas.enums.TipoDespesa;
 import br.com.danielsaes.api_receitas_despesas.modelo.Despesa;
 
-public class DespesaDtoListagem {
+public class DespesaDtoListagem  extends RepresentationModel<DespesaDto>{
 
 	private String descricao;
 	private LocalDate dataDespesa;
@@ -61,5 +62,6 @@ public class DespesaDtoListagem {
 	public static Page<Object> converterLista(Page<Despesa> listaDespesas) {
 		return listaDespesas.map(DespesaDtoListagem::new);
 	}
+	
 	
 }

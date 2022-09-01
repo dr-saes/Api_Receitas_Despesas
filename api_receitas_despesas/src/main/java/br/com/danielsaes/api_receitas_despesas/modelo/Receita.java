@@ -4,28 +4,24 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.hateoas.RepresentationModel;
+
 @Entity
-public class Receita implements Serializable {
+public class Receita extends RepresentationModel<Receita> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column
 	private String descricao;
-	@Column
 	private BigDecimal valorReceita;
-	@Column
 	private LocalDate dataReceita;
-	@Column
 	private int mesReceita;
-	@Column
 	private int anoReceita;
 	
 

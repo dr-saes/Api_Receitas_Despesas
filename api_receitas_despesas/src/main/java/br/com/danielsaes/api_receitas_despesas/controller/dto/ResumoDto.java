@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public class ResumoDto {
+import org.springframework.hateoas.RepresentationModel;
+
+public class ResumoDto extends RepresentationModel<DespesaDto>{
 	
 	private BigDecimal somaReceitas;
 	private BigDecimal somaDespesas;
@@ -15,6 +17,8 @@ public class ResumoDto {
 			Optional<BigDecimal> saldoFinalDoMes,List<Object> listaDeDespesaPorCategoria
 			) {
 		
+		
+		
 		this.somaReceitas = resumoReceitaAnoMes.get();
 		this.somaDespesas = resumoDespesaAnoMes.get();
 		this.saldoFinalDoMes = saldoFinalDoMes.get();
@@ -22,6 +26,10 @@ public class ResumoDto {
 		
 	}
 	
+
+	public ResumoDto(Optional<BigDecimal> resumoSomaReceitaAnoMes) {
+	}
+
 
 	public BigDecimal getSomaReceitas() {
 		return somaReceitas;
@@ -55,6 +63,12 @@ public class ResumoDto {
 
 	public void setlistaDeDespesaPorCategoria(List<Object> listaDeDespesaPorCategoria) {
 		this.listaDeDespesaPorCategoria = listaDeDespesaPorCategoria;
+	}
+
+
+	public static ResumoDto converterLista(Optional<BigDecimal> resumoSomaReceitaAnoMes) {
+
+		return new ResumoDto(resumoSomaReceitaAnoMes);
 	}
 
 	
