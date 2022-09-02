@@ -25,7 +25,7 @@ public interface ReceitaRepository extends JpaRepository<Receita, Long> {
 	
 	@Query("SELECT SUM(valorReceita) FROM Receita WHERE anoReceita = :anoReceita and mesReceita = :mesReceita")
 	Optional<BigDecimal> FindBySumValorReceitaAnoReceitaAndMesReceita(int anoReceita, int mesReceita);
-
+	
 	
 }
 

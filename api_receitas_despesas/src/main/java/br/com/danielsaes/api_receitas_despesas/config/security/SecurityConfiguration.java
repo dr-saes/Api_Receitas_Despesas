@@ -33,14 +33,17 @@ public class SecurityConfiguration {
 		http
 			.authorizeHttpRequests()
 			
-//			.antMatchers(HttpMethod.GET,"/despesas/**").permitAll()
-//			.antMatchers(HttpMethod.GET,"/receitas/**").permitAll() 
-//			.antMatchers(HttpMethod.GET,"/h2/**").permitAll()
+			.antMatchers(HttpMethod.GET,"/despesas/**").permitAll()
+			.antMatchers(HttpMethod.GET,"/receitas/**").permitAll() 
+			.antMatchers(HttpMethod.GET,"/resumo/**").permitAll() 
+			
+			.antMatchers(HttpMethod.GET,"/h2/**").permitAll()
 			
 			.antMatchers(HttpMethod.POST,"/auth").permitAll()
 			
-			.antMatchers(HttpMethod.GET,"/despesas/**").hasAnyRole("USUARIO","ADMIN")
-			.antMatchers(HttpMethod.GET,"/receitas/**").hasAnyRole("USUARIO","ADMIN")
+//			.antMatchers(HttpMethod.GET,"/despesas/**").hasAnyRole("USUARIO","ADMIN")
+//			.antMatchers(HttpMethod.GET,"/receitas/**").hasAnyRole("USUARIO","ADMIN")
+//			.antMatchers(HttpMethod.GET,"/resumo/**").hasRole("ADMIN")
 			
 			.antMatchers(HttpMethod.POST,"/receitas/**").hasAnyRole("USUARIO","ADMIN")
 			.antMatchers(HttpMethod.POST,"/despesas/**").hasAnyRole("USUARIO","ADMIN")
@@ -51,7 +54,6 @@ public class SecurityConfiguration {
 			.antMatchers(HttpMethod.DELETE,"/receitas/**").hasRole("ADMIN")
 			.antMatchers(HttpMethod.DELETE,"/despesas/**").hasRole("ADMIN")
 			
-			.antMatchers(HttpMethod.GET,"/resumo/**").hasRole("ADMIN")
 			
 			.anyRequest().authenticated()
 		.and()	

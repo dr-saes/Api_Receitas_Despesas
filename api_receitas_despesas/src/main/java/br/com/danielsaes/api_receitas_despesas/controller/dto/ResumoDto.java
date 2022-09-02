@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.hateoas.RepresentationModel;
 
-public class ResumoDto extends RepresentationModel<DespesaDto>{
+public class ResumoDto extends RepresentationModel<ResumoDto>{
 	
 	private BigDecimal somaReceitas;
 	private BigDecimal somaDespesas;
@@ -67,14 +67,12 @@ public class ResumoDto extends RepresentationModel<DespesaDto>{
 
 
 	public static ResumoDto converterLista(Optional<BigDecimal> resumoSomaReceitaAnoMes) {
-
 		return new ResumoDto(resumoSomaReceitaAnoMes);
 	}
 
-	
+
 
 	
-
 	}
 
 	

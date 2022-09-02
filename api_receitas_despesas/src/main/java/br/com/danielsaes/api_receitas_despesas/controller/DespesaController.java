@@ -76,9 +76,34 @@ public class DespesaController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Lista inexistente");
 			} else {
 				Page<DespesaDto> listaDto = DespesaDto.converterLista(listaDespesas);
-				for (DespesaDto depesa : listaDto) {
-					long id = depesa.getId();
-					depesa.add(linkTo(methodOn(DespesaController.class).listarPorId(id, paginacao)).withSelfRel());
+				for (DespesaDto despesa : listaDto) {
+					long id = despesa.getId();
+					
+					despesa
+						.add(linkTo(methodOn(DespesaController.class).listarPorId(id, paginacao))
+								.withRel("Listagem por Id")
+								.withHref("http://localhost:8080/despesas/" + despesa.getId())
+								.withType("GET"));
+					despesa
+						.add(linkTo(methodOn(DespesaController.class).listarPorId(id, paginacao))
+								.withRel("Lista com a descricao: " + "'" + despesa.getDescricao() + "'")
+								.withHref("http://localhost:8080/despesas?descricao=" + despesa.getDescricao())
+								.withType("GET"));
+					
+					despesa
+					.add(linkTo(methodOn(DespesaController.class).listarPorId(id, paginacao))
+							.withRel("Despesas por ano/mes ")
+							.withHref("http://localhost:8080/despesas/" + despesa.getDataDespesa().getYear()
+									+ "/" + despesa.getDataDespesa().getMonthValue())
+							.withType("GET"));
+					
+					despesa
+					.add(linkTo(methodOn(DespesaController.class).listarPorId(id, paginacao))
+							.withRel("Resumo por ano/mes ")
+							.withHref("http://localhost:8080/resumo/" + despesa.getDataDespesa().getYear()
+									+ "/" + despesa.getDataDespesa().getMonthValue())
+							.withType("GET"));
+					
 				}
 				return new ResponseEntity<Page<DespesaDto>>(listaDto, HttpStatus.OK);
 			}
@@ -86,8 +111,18 @@ public class DespesaController {
 			Page<Despesa> listaDespesaDescricao = despesaRepository.findByDescricao(descricao, paginacao);
 			Page<DespesaDto> listaDtoDescricao = DespesaDto.converterLista(listaDespesaDescricao);
 			for (DespesaDto despesa : listaDtoDescricao) {
-				long id = despesa.getId();
-				despesa.add(linkTo(methodOn(DespesaController.class).listarPorId(id, paginacao)).withSelfRel());
+		
+		despesa
+				.add(linkTo(methodOn(DespesaController.class).listarDespesas(despesa.getDescricao(), paginacao))
+					.withRel(" Lista de receitas")
+					.withHref("http://localhost:8080/despesas")
+					.withType("GET"));
+		
+		despesa
+				.add(linkTo(methodOn(DespesaController.class).listarDespesas(despesa.getDescricao(), paginacao))
+					.withRel("Listagem por Id")
+					.withHref("http://localhost:8080/despesas/" + despesa.getId())
+					.withType("GET"));;
 			}
 			return new ResponseEntity<Page<DespesaDto>>(listaDtoDescricao, HttpStatus.OK);
 		}
@@ -102,10 +137,26 @@ public class DespesaController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id inexistente");
 		} else {
 			DespesaDto despesaDto = DespesaDto.converterDespesa(despesa);
-
 			despesaDto
 					.add(linkTo(methodOn(DespesaController.class).listarDespesas(despesaDto.getDescricao(), paginacao))
-							.withRel(" Lista de despesas com a descricao: " + "'" + despesaDto.getDescricao() + "' "));
+							.withRel("Lista de despesas")
+							.withHref("http://localhost:8080/despesas")
+							.withType("GET"));
+			despesaDto
+					.add(linkTo(methodOn(DespesaController.class).listarDespesas(despesaDto.getDescricao(), paginacao))
+							.withRel("Deletar despesa")
+							.withHref("http://localhost:8080/despesas/" + despesaDto.getId())
+							.withType("DELETE"));
+			
+			despesaDto
+					.add(linkTo(methodOn(DespesaController.class).listarDespesas(despesaDto.getDescricao(), paginacao))
+							.withRel("Atualizar despesa")
+							.withHref("http://localhost:8080/despesa/" + despesaDto.getId())
+							.withType("PUT"));
+				
+			
+			
+			
 			return new ResponseEntity<DespesaDto>(despesaDto, HttpStatus.OK);
 		}
 	}
@@ -146,8 +197,18 @@ public class DespesaController {
 		} else {
 			Page<DespesaDto> listaDespesasAnoMesDto = DespesaDto.converterLista(listaDespesasAnoMes);
 			for (DespesaDto despesa : listaDespesasAnoMesDto) {
-				long id = despesa.getId();
-				despesa.add(linkTo(methodOn(DespesaController.class).listarPorId(id, paginacao)).withSelfRel());
+				
+				despesa
+						.add(linkTo(methodOn(DespesaController.class).listarDespesas(despesa.getDescricao(), paginacao))
+							.withRel(" Lista de despesas")
+							.withHref("http://localhost:8080/despesas")
+							.withType("GET"));
+		
+				despesa
+						.add(linkTo(methodOn(DespesaController.class).listarDespesas(despesa.getDescricao(), paginacao))
+							.withRel("Listagem por Id")
+							.withHref("http://localhost:8080/despesas/" + despesa.getId())
+							.withType("GET"));
 			}
 			return new ResponseEntity<Page<DespesaDto>>(listaDespesasAnoMesDto, HttpStatus.OK);
 		}

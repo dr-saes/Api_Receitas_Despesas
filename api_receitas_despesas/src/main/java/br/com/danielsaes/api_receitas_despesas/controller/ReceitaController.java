@@ -85,7 +85,31 @@ public class ReceitaController {
 				Page<ReceitaDto> listaDto = ReceitaDto.converterLista(listaReceitas);
 				for (ReceitaDto receita : listaDto) {
 					long id = receita.getId();
-					receita.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao)).withSelfRel());
+					
+					receita
+						.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao))
+							.withRel("Listagem por Id")
+							.withHref("http://localhost:8080/receitas/" + receita.getId())
+							.withType("GET"));
+					receita
+						.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao))
+							.withRel("Lista com a descricao: " + "'" + receita.getDescricao() + "'")
+							.withHref("http://localhost:8080/receitas?descricao=" + receita.getDescricao())
+							.withType("GET"));
+					
+					receita
+					.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao))
+							.withRel("Receitas por ano/mes ")
+							.withHref("http://localhost:8080/receitas/" + receita.getDataReceita().getYear()
+									+ "/" + receita.getDataReceita().getMonthValue())
+							.withType("GET"));
+					
+					receita
+					.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao))
+							.withRel("Resumo por ano/mes ")
+							.withHref("http://localhost:8080/resumo/" + receita.getDataReceita().getYear()
+									+ "/" + receita.getDataReceita().getMonthValue())
+							.withType("GET"));
 				}
 				return new ResponseEntity<Page<ReceitaDto>>(listaDto, HttpStatus.OK);
 			}
@@ -93,8 +117,18 @@ public class ReceitaController {
 			Page<Receita> listaReceitasDescricao = receitaRepository.findByDescricao(descricao, paginacao);
 			Page<ReceitaDto> listaDtoDescricao = ReceitaDto.converterLista(listaReceitasDescricao);
 			for (ReceitaDto receita : listaDtoDescricao) {
-				long id = receita.getId();
-				receita.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao)).withSelfRel());
+				
+				receita
+						.add(linkTo(methodOn(ReceitaController.class).listarReceitas(receita.getDescricao(), paginacao))
+							.withRel(" Lista de receitas")
+							.withHref("http://localhost:8080/receitas")
+							.withType("GET"));
+				
+			  	receita
+						.add(linkTo(methodOn(ReceitaController.class).listarReceitas(receita.getDescricao(), paginacao))
+							.withRel("Listagem por Id")
+							.withHref("http://localhost:8080/receitas/" + receita.getId())
+							.withType("GET"));
 			}
 			return new ResponseEntity<Page<ReceitaDto>>(listaDtoDescricao, HttpStatus.OK);
 		}
@@ -110,8 +144,24 @@ public class ReceitaController {
 		} else {
 			ReceitaDto receitaDto = ReceitaDto.converterReceita(receita);
 			
-			receitaDto.add(linkTo(methodOn(ReceitaController.class).listarReceitas(receitaDto.getDescricao(), paginacao))
-					.withRel(" Lista de receitas com a descricao: " + "'" + receitaDto.getDescricao() + "' "));
+			receitaDto
+					.add(linkTo(methodOn(ReceitaController.class).listarReceitas(receitaDto.getDescricao(), paginacao))
+						.withRel(" Lista de receitas")
+						.withHref("http://localhost:8080/receitas")
+						.withType("GET"));
+			
+			receitaDto
+					.add(linkTo(methodOn(ReceitaController.class).listarReceitas(receitaDto.getDescricao(), paginacao))
+						.withRel("Deletar receita")
+						.withHref("http://localhost:8080/receitas/" + receitaDto.getId())
+						.withType("DELETE"));
+			
+			receitaDto
+					.add(linkTo(methodOn(ReceitaController.class).listarReceitas(receitaDto.getDescricao(), paginacao))
+						.withRel("Atualizar receita")
+						.withHref("http://localhost:8080/receitas/" + receitaDto.getId())
+						.withType("PUT"));
+
 			return new ResponseEntity<ReceitaDto>(receitaDto, HttpStatus.OK);
 		}
 	}
@@ -152,8 +202,18 @@ public class ReceitaController {
 		} else {
 			Page<ReceitaDto> listaReceitasAnoMesDto = ReceitaDto.converterLista(listaReceitasAnoMes);
 			for (ReceitaDto receita : listaReceitasAnoMesDto) {
-				long id = receita.getId();
-				receita.add(linkTo(methodOn(ReceitaController.class).listarPorId(id, paginacao)).withSelfRel());
+				
+		receita
+				.add(linkTo(methodOn(ReceitaController.class).listarReceitas(receita.getDescricao(), paginacao))
+					.withRel(" Lista de receitas")
+					.withHref("http://localhost:8080/receitas")
+					.withType("GET"));
+		
+	  	receita
+				.add(linkTo(methodOn(ReceitaController.class).listarReceitas(receita.getDescricao(), paginacao))
+					.withRel("Listagem por Id")
+					.withHref("http://localhost:8080/receitas/" + receita.getId())
+					.withType("GET"));
 			}
 			return new ResponseEntity<Page<ReceitaDto>>(listaReceitasAnoMesDto, HttpStatus.OK);
 		}

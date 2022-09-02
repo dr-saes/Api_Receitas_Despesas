@@ -1,5 +1,7 @@
 package br.com.danielsaes.api_receitas_despesas.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +89,16 @@ public class ResumoController {
 			listaDeDespesaPorCategoria.add(imprevistos);
 			
 			return ResponseEntity.ok(new ResumoDto(resumoSomaReceitaAnoMes, resumoSomaDespesaAnoMes,
-					saldoFinalDoMes,listaDeDespesaPorCategoria)); 
-		
+					saldoFinalDoMes,listaDeDespesaPorCategoria)
+					.add(linkTo(ResumoController.class)
+							.withRel("Lista de Receitas do mes")
+							.withHref("http://localhost:8080/receitas")
+							.withType("GET"))
+					
+					.add(linkTo(ResumoController.class)
+							.withRel("Lista de Despesas do mes")
+							.withHref("http://localhost:8080/despesas")
+							.withType("GET")));
 			
 		} catch (java.util.NoSuchElementException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parametro de pequisa não encontrado!");
