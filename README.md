@@ -1,4 +1,4 @@
-# Api de Receitas e desepesas (Controle financeiro doméstico)
+# Api de Receitas e Desepesas (Controle financeiro doméstico)
 ## Tecnologias utilizadas:
 
 -  Java.
