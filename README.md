@@ -12,23 +12,10 @@
 #### Todas as receitas:
 https://app-receitas-despesas.herokuapp.com/receitas
 
-#### Receitas por descrição:
-https://app-receitas-despesas.herokuapp.com/receitas?descricao={descricao}
-
-#### Receitas por ano/mes:
-https://app-receitas-despesas.herokuapp.com/receitas/{ano}/{mes}
-
 #### Todas as despesas:
 https://app-receitas-despesas.herokuapp.com/despesas
 
-#### Despesas por descrição:
-https://app-receitas-despesas.herokuapp.com/despesas?descricao={descricao}
 
-#### Despesas por ano/mes: 
-https://app-receitas-despesas.herokuapp.com/despesas/{ano}/{mes}
-	 	 
-#### Resumo final de receitas e despesas por ano/mes com as despesas especificadsas por tipo: 
-https://app-receitas-despesas.herokuapp.com/resumo/{ano}/{mes}
 
 ## Rotas:
 
