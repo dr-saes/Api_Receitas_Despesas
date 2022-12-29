@@ -32,7 +32,7 @@ https://app-receitas-despesas.herokuapp.com/despesas
 
 ### URL: /receitas
    
-##### Método: POST (cadastral uma receita)
+##### Método: POST (cadastra uma receita)
 ##### BodyParams: Json com dados da receitas 	 
     
      {
